@@ -99,17 +99,30 @@
     </div>
     
 
-    @code {
+@code {
 
-        IQueryable<Autor> itemsQueryable;
-        Autor autor = new Autor();
+    IQueryable<Autor> itemsQueryable;
+    Autor autor = new Autor();
 
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
 
-    public void Buscar()
+    protected override Task OnInitializedAsync()
     {
-        
+        var items =  autorService.GetList(a => a.AutorId > 0);
+        itemsQueryable = items.AsQueryable();
+    }
+
+
+
+    public async Task Buscar()
+    {
+        if (ValorFiltro.Trim() != "" && Filtro == "Nombres")
+        {
+            var nombres = autorService.GetList(a => a.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
+            itemsQueryable = nombres.AsQueryable();
+        }
+
     }
     }
 
