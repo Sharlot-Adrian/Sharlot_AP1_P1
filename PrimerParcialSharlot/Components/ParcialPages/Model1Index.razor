@@ -3,6 +3,7 @@
 @inject NavigationManager navigationManager
 @inject AutorService autorService
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using PrimerParcialSharlot.Model
 
 <PageTitle>Index</PageTitle>
 <div class="container">
@@ -49,20 +50,36 @@
             @*quickgrid*@
 
             <div class="container">
-                <QuickGrid>
-                    <QuickGrid Items=""
+                <QuickGrid Items="@itemsQueryable">
+                    <PropertyColumn Property="@(a => a.AutorId)" Sortable="true"></PropertyColumn>
+                    <PropertyColumn Property="@(a => a.Nombres)" Sortable="true"></PropertyColumn>
+                    <PropertyColumn Property="@(a => a.Nacionalidad)" Sortable="true"></PropertyColumn>
+                    <PropertyColumn Property="@(a => a.Sueldo)" Sortable="true"></PropertyColumn>
+
+                    <TemplateColumn Title="Opciones">
+                        <a href="Autor/Modificar/@context.AutorId" class="btn btn-primary bi-bi-square-pencil">Modificar</a>
+                        <a href="" class="btn btn-secondary bi bi-floppy" data-bs-toggle="#modal" data-bs-toggle ="#eliminacionModal">Eliminar</a>
+
+                    </TemplateColumn>
+                    
                 </QuickGrid>
             </div>
 
         </div>
   @*footer*@
+  <div class="card-footer justify-content-between align-center">
+            <label class="ms-3"><strong>Cantidad: </strong> @itemsQueryable?.Count()</label
+      <label class="ms-3"><strong>Sum: </strong> @itemsQueryable?.Sum(a => a.Sueldo).ToString()</label>
+  </div>
     </div>
     </div>
 
     @*modal eliminacion*@
+    
 
 @code {
 
+    IQueryable<Autor> itemsQueryable;
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
 
