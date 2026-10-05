@@ -3,22 +3,30 @@ using Microsoft.EntityFrameworkCore;
 using PrimerParcialSharlot.Context;
 using PrimerParcialSharlot.Model;
 using System.Linq.Expressions;
-
+using PrimerParcialSharlot.Service;
 namespace PrimerParcialSharlot.Service;
 
-public class Model1Service (IDbContextFactory<Contexto> contextFactory
-    ):IService<Model1, int>
+public class AutorService (IDbContextFactory<Contexto> contextFactory
+    ):IService<Autor, int>
 {
-    public async Task<bool> Guardar(Model1 model1)
+    public async Task<bool> Guardar(Autor autor)
     {
-        throw new NotImplementedException();
+        if (await Existe(autor.AutorId))
+        {
+            return await Insertar(autor);
+        }
+        else
+        {
+            return await Modificar(autor);
+        }
     }
     private async Task<bool> Existe(int modelId)
     {
         throw new NotImplementedException();
+
     }
 
-    private async Task<bool> Insertar(Model1 model1)
+    private async Task<bool> Insertar(Autor model1)
     {
         throw new NotImplementedException();
     }
@@ -28,17 +36,17 @@ public class Model1Service (IDbContextFactory<Contexto> contextFactory
         throw new NotImplementedException();
     }
 
-    public async Task<List<Model1>> GetList(Expression<Func<Model1, bool>> criterio)
+    public async Task<List<Autor>> GetList(Expression<Func<Autor, bool>> criterio)
     {
         throw new NotImplementedException();
     }
 
-    private async Task<bool> Modificar(Model1 model1)
+    private async Task<bool> Modificar(Autor model1)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<Model1?> Buscar(int estudianteId)
+    public async Task<Autor?> Buscar(int estudianteId)
     {
         throw new NotImplementedException();
     }

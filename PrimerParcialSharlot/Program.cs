@@ -15,7 +15,7 @@ var ConStr = builder.Configuration.GetConnectionString("ConStr");
 //Agregamos el contexto al builder con el ConStr
 builder.Services.AddDbContextFactory<Contexto>(o => o.UseSqlServer(ConStr));
 
-builder.Services.AddScoped<Model1Service>();
+builder.Services.AddScoped<AutorService>();
 
 
 builder.Services.AddBlazorBootstrap();
