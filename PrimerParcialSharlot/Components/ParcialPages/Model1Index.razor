@@ -1,7 +1,8 @@
-﻿@page "/Model1/Index"
+﻿@page "/Autor/Index"
 @inject ToastService toastService
 @inject NavigationManager navigationManager
 @inject AutorService autorService
+@using Microsoft.AspNetCore.Components.QuickGrid
 
 <PageTitle>Index</PageTitle>
 <div class="container">
@@ -32,8 +33,8 @@
                 <div class="col-3">
                     <InputSelect class="form-select" @bind-Value="Filtro">
                         <option value=""selected disabled>Elija una opci&oacute;n</option>
-                        <option value="opcion1">opcion1</option>
-                        <option value="opcion2">opcion2</option>
+                        <option value="Nombres">Nombres</option>
+                        <option value="Nacionalidad">Nacionalidad</option>
                     </InputSelect>
                 </div>
 
@@ -46,6 +47,12 @@
                 </div>
             </div>
             @*quickgrid*@
+
+            <div class="container">
+                <QuickGrid>
+                    <QuickGrid Items=""
+                </QuickGrid>
+            </div>
 
         </div>
   @*footer*@
