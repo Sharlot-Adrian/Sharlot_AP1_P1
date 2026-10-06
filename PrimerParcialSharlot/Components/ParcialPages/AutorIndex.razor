@@ -108,12 +108,12 @@
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
 
-    // protected override Task OnInitializedAsync()
-    // {
-    //     var items = autorService.FirstOrDefaultAsync(a => a.AutorId > 0);
-    //     itemsQueryable = items.AsQueryable();
+    protected override Task OnInitializedAsync()
+    {
+        var items = autorService.FirstOrDefaultAsync(a => a.AutorId > 0);
+        itemsQueryable = items.AsQueryable();
 
-    // }
+    }
 
 
     public async Task Buscar()
@@ -125,6 +125,22 @@
         }
 
     }
+
+     public async Task Eliminar()
+    {
+        var eliminar = autorService.Eliminar(autor);
+
+        if (await eliminar)
+        {
+            toastService.ShowSuccess("Exito al eliminar");
+            navigationManager.NavigateTo("navigationManager");
+
+        }
+        else
+        {
+             toastService.ShowSuccess("fallo al eliminar");
+        }
+    }  
 
  }
 
