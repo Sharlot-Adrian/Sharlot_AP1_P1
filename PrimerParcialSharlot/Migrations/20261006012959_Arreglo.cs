@@ -5,21 +5,24 @@
 namespace PrimerParcialSharlot.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class Arreglo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Model1",
+                name: "Autores",
                 columns: table => new
                 {
-                    ModelId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                    AutorId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombres = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nacionalidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sueldo = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Model1", x => x.ModelId);
+                    table.PrimaryKey("PK_Autores", x => x.AutorId);
                 });
         }
 
@@ -27,7 +30,7 @@ namespace PrimerParcialSharlot.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Model1");
+                name: "Autores");
         }
     }
 }

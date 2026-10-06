@@ -11,8 +11,8 @@ using PrimerParcialSharlot.Context;
 namespace PrimerParcialSharlot.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20261006003512_CambioObligatorio")]
-    partial class CambioObligatorio
+    [Migration("20261006012959_Arreglo")]
+    partial class Arreglo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

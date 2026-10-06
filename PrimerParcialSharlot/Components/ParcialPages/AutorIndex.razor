@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using PrimerParcialSharlot.Model
 @using PrimerParcialSharlot.Context;
+@using PrimerParcialSharlot.Extentors;
 
 <PageTitle>Index</PageTitle>
 <div class="container">
@@ -108,9 +109,9 @@
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        var items = autorService.FirstOrDefaultAsync(a => a.AutorId > 0);
+        var items = await autorService.GetList(a => true);
         itemsQueryable = items.AsQueryable();
 
     }
@@ -118,22 +119,21 @@
 
     public async Task Buscar()
     {
-        if (ValorFiltro.Trim() != "" && Filtro == "Nombres")
-        {
-            var nombres = itemsQueryable.FirstOrDefault(a => a.AutorId > 0);
-           // itemsQueryable = nombres.AsQueryable();
-        }
-
+        // if (ValorFiltro.Trim() != "" && Filtro == "Nombres")
+        // {
+        //     var nombres = await autorService.Buscar(a => a.Nombres.ToLower().Contains(Filtro.ToLower()));
+        //     itemsQueryable = nombres.AsQueryable();
+        // }
     }
+
 
      public async Task Eliminar()
     {
-        var eliminar = autorService.Eliminar(autor);
+        var eliminar = autorService.Eliminar(autor.AutorId);
 
         if (await eliminar)
         {
             toastService.ShowSuccess("Exito al eliminar");
-            navigationManager.NavigateTo("navigationManager");
 
         }
         else
