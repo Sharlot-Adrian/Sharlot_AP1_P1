@@ -4,6 +4,7 @@ using PrimerParcialSharlot.Context;
 using PrimerParcialSharlot.Model;
 using System.Linq.Expressions;
 using PrimerParcialSharlot.Service;
+using Microsoft.IdentityModel.Tokens;
 namespace PrimerParcialSharlot.Service;
 
 public class AutorService (IDbContextFactory<Contexto> contextFactory
@@ -20,34 +21,42 @@ public class AutorService (IDbContextFactory<Contexto> contextFactory
             return await Modificar(autor);
         }
     }
-    private async Task<bool> Existe(int modelId)
+    private async Task<bool> Existe(int autorId)
     {
-        throw new NotImplementedException();
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        return await contexto.Autores.AnyAsync(a => a.AutorId == autorId);
 
     }
 
-    private async Task<bool> Insertar(Autor model1)
+    private async Task<bool> Insertar(Autor autorId)
     {
-        throw new NotImplementedException();
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        contexto.Autores.Add(autorId);
+        return await contexto.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> Eliminar(int modelId)
+    public async Task<bool> Eliminar(int autorId)
     {
-        throw new NotImplementedException();
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        return await contexto.Autores.Where(a => a.AutorId == autorId).ExecuteDeleteAsync() > 0;
     }
 
     public async Task<List<Autor>> GetList(Expression<Func<Autor, bool>> criterio)
     {
-        throw new NotImplementedException();
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        return await contexto.Autores.Where(criterio).AsNoTracking().ToListAsync();
     }
 
-    private async Task<bool> Modificar(Autor model1)
+    private async Task<bool> Modificar(Autor autor)
     {
-        throw new NotImplementedException();
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        contexto.Autores.Update(autor);
+        return await contexto.SaveChangesAsync() > 0;   
     }
 
     public async Task<Autor?> Buscar(int estudianteId)
     {
-        throw new NotImplementedException();
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        return await contexto.Autores.FirstOrDefaultAsync();
     }
 }

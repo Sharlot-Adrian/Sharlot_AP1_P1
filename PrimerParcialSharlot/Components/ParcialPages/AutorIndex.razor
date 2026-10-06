@@ -4,13 +4,14 @@
 @inject AutorService autorService
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using PrimerParcialSharlot.Model
+@using PrimerParcialSharlot.Context;
 
 <PageTitle>Index</PageTitle>
 <div class="container">
     <div class="card shadow-lg">
         <div class="card-header d-flex justify-content-between align-content-center mb-4">
             <h5 class="card-title">Registro de Model1</h5>
-            <a href ="/GestionLibros/Crear" class="btn btn-primary"><span class="bi bi-plus-square mt-3"></span> Crear</a>
+            <a href ="/Autor/Create" class="btn btn-primary"><span class="bi bi-plus-square mt-3"></span> Crear</a>
         </div>
 
         <div class="card-body">
@@ -107,23 +108,24 @@
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
 
-    protected override Task OnInitializedAsync()
-    {
-        var items =  autorService.GetList(a => a.AutorId > 0);
-        itemsQueryable = items.AsQueryable();
-    }
+    // protected override Task OnInitializedAsync()
+    // {
+    //     var items = autorService.FirstOrDefaultAsync(a => a.AutorId > 0);
+    //     itemsQueryable = items.AsQueryable();
 
+    // }
 
 
     public async Task Buscar()
     {
         if (ValorFiltro.Trim() != "" && Filtro == "Nombres")
         {
-            var nombres = autorService.GetList(a => a.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
-            itemsQueryable = nombres.AsQueryable();
+            var nombres = itemsQueryable.FirstOrDefault(a => a.AutorId > 0);
+           // itemsQueryable = nombres.AsQueryable();
         }
 
     }
-    }
+
+ }
 
 
