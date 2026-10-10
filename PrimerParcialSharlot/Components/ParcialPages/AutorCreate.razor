@@ -55,9 +55,9 @@
 
     public async Task Guardar()
     {
-        var guardar = autorService.Guardar(Autor);
+        var guardar = await autorService.Guardar(Autor);
 
-        if (await guardar)
+        if (guardar)
         {
             toastService.ShowSuccess("¡Exito al guardar!");
             navigationManager.NavigateTo("/Autor/Index");

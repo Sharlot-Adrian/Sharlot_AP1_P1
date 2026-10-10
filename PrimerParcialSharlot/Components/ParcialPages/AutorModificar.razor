@@ -90,9 +90,9 @@
 
     public async Task Modificar()
     {
-        var modificado = autorService.Guardar(Autor);
+        var modificado = await autorService.Guardar(Autor);
 
-        if (await modificado)
+        if (modificado)
         {
             toastService.ShowSuccess("¡Exito al modificar!");
             navigationManager.NavigateTo("/Autor/Index");
@@ -106,9 +106,9 @@
 
     public async Task Eliminar()
     {
-        var eliminar = autorService.Eliminar(Autor.AutorId);
+        var eliminar = await autorService.Eliminar(Autor.AutorId);
 
-        if (await eliminar)
+        if (eliminar)
         {
             toastService.ShowSuccess("¡Exito al eliminar!");
 

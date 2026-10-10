@@ -74,9 +74,7 @@
 
 @code {
 
-    IQueryable<Autor> itemsQueryable;
-    Autor Autor = new Autor();
-
+    IQueryable<Autor?> itemsQueryable;
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
 
@@ -102,23 +100,4 @@
 
         }
     }
-
-
-    public async Task Eliminar()
-    {
-        var eliminar = autorService.Eliminar(Autor.AutorId);
-
-        if (await eliminar)
-        {
-            toastService.ShowSuccess("¡Exito al eliminar!");
-
-        }
-        else
-        {
-             toastService.ShowError("Error al eliminar.");
-        }
-    }  
-
  }
-
-
