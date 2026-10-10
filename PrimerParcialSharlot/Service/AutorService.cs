@@ -44,7 +44,10 @@ public class AutorService (IDbContextFactory<Contexto> contextFactory
     public async Task<List<Autor>> GetList(Expression<Func<Autor, bool>> criterio)
     {
         await using var contexto = await contextFactory.CreateDbContextAsync();
-        return await contexto.Autores.Where(criterio).AsNoTracking().ToListAsync();
+        return await contexto.Autores
+            .Where(criterio)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     private async Task<bool> Modificar(Autor autor)

@@ -2,20 +2,18 @@
 @inject ToastService toastService
 @inject NavigationManager navigationManager
 @inject AutorService autorService
-@using Microsoft.AspNetCore.Components.QuickGrid
-@using PrimerParcialSharlot.Model
-@using PrimerParcialSharlot.Context;
 @using PrimerParcialSharlot.Extentors;
 
 <PageTitle>Index</PageTitle>
 <div class="container">
     <div class="card shadow-lg">
         <div class="card-header d-flex justify-content-between align-content-center mb-4">
-            <h5 class="card-title">Registro de Model1</h5>
+            <h5 class="card-title">Registro de Autores</h5>
             <a href ="/Autor/Create" class="btn btn-primary"><span class="bi bi-plus-square mt-3"></span> Crear</a>
         </div>
 
         <div class="card-body">
+
             @*labels*@
             <div class="row">
 
@@ -59,8 +57,8 @@
                     <PropertyColumn Property="@(a => a.Sueldo)" Sortable="true"></PropertyColumn>
 
                     <TemplateColumn Title="Opciones">
-                        <a href="Autor/Modificar/@context.AutorId" class="btn btn-primary bi-bi-square-pencil">Modificar</a>
-                        <a href="" class="btn btn-secondary bi bi-floppy" data-bs-toggle="#modal" data-bs-target ="#eliminacionModal">Eliminar</a>
+                        <a href="/Autor/Modificar/@context.AutorId" class="btn btn-outline-primary bi bi-pencil-square"></a>
+                        <button type="button" class = "btn btn-outline-danger bi bi-trash" data-bs-toggle="modal" data-bs-target ="#eliminacionModal"></button>
 
                     </TemplateColumn>
                     
@@ -69,15 +67,15 @@
 
         </div>
   @*footer*@
-  <div class="card-footer justify-content-between align-center">
-            <label class="ms-3"><strong>Cantidad: </strong> @itemsQueryable?.Count()</label>
-      <label class="ms-3"><strong>Sum: </strong> @itemsQueryable?.Sum(a => a.Sueldo).ToString()</label>
+  <div class="card-footer d-flex justify-content-between align-center mb-4">
+      <label class="ms-3"><strong>Cantidad: </strong> @itemsQueryable?.Count()</label>
+      <label class="ms-3"><strong>Sum: </strong> $@itemsQueryable?.Sum(a => a.Sueldo).ToString("N2")</label>
   </div>
-    </div>
-    </div>
+</div>
+</div>
 
     @*modal eliminacion*@
-    <div class="modal" id="eliminacionModal" tabindex="-1" role="dialog" aria-hidden ="true">
+    <div class="modal" id="eliminacionModal" tabindex="-1" role="dialog" aria-labelledby-hidden ="nombre" >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -93,8 +91,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss ="#modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" data-bs-toggle ="#modal" data-bs-target="#eliminacionModal">Confirmar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss ="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle ="modal" data-bs-target="#eliminacionModal">Confirmar</button>
                 </div>
             </div>
         </div>
@@ -119,11 +117,17 @@
 
     public async Task Buscar()
     {
-        // if (ValorFiltro.Trim() != "" && Filtro == "Nombres")
-        // {
-        //     var nombres = await autorService.Buscar(a => a.Nombres.ToLower().Contains(Filtro.ToLower()));
-        //     itemsQueryable = nombres.AsQueryable();
-        // }
+        if (ValorFiltro.Trim() != "" && Filtro == "Nombres")
+        {
+            var nombres = await autorService.GetList(a => a.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
+            itemsQueryable = nombres.AsQueryable();
+
+        }else if (ValorFiltro.Trim() != ""  && Filtro == "Nacionalidad")
+        {
+            var nombres = await autorService.GetList(a => a.Nacionalidad.ToLower().Contains(ValorFiltro.ToLower()));
+            itemsQueryable = nombres.AsQueryable();
+
+        }
     }
 
 
@@ -133,12 +137,12 @@
 
         if (await eliminar)
         {
-            toastService.ShowSuccess("Exito al eliminar");
+            toastService.ShowSuccess("¡Exito al eliminar!");
 
         }
         else
         {
-             toastService.ShowSuccess("fallo al eliminar");
+             toastService.ShowSuccess("Error al eliminar.");
         }
     }  
 

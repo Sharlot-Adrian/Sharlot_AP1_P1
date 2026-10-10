@@ -3,15 +3,13 @@
 @inject ToastService toastService
 @inject NavigationManager navigationManager
 @inject AutorService autorService
-@using Microsoft.AspNetCore.Components.QuickGrid
-@using PrimerParcialSharlot.Context;
 @using PrimerParcialSharlot.Extentors;
 
-@page "/Autor/Modificar"
+@page "/Autor/Modificar/{AutorId:int}"
 
 <h3>AutorCreate</h3>
 
-<EditForm Model="autor" OnInvalidSubmit="Guardar">
+<EditForm Model="autor" OnValidSubmit="Guardar">
     <div class="container">
         <div class="card-shadow-lg">
             <div>
@@ -49,6 +47,8 @@
 
 @code {
 
+    [Parameter]
+    public int AutorId { get; set; }
     Autor autor = new Autor();
 
     public async Task Guardar()
