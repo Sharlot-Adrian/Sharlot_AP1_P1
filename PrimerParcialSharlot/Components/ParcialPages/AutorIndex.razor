@@ -58,8 +58,6 @@
 
                     <TemplateColumn Title="Opciones">
                         <a href="/Autor/Modificar/@context.AutorId" class="btn btn-outline-primary bi bi-pencil-square"></a>
-                        <button type="button" class = "btn btn-outline-danger bi bi-trash" data-bs-toggle="modal" data-bs-target ="#eliminacionModal"></button>
-
                     </TemplateColumn>
                     
                 </QuickGrid>
@@ -74,35 +72,10 @@
 </div>
 </div>
 
-    @*modal eliminacion*@
-    <div class="modal" id="eliminacionModal" tabindex="-1" role="dialog" aria-labelledby-hidden ="nombre" >
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmar eliminacion</h5>
-                    <button type="button" class="btn-close" aria-valuetext="cerrar"></button>
-                </div>
-
-                <div class="modal-body">
-                @if(autor != null)
-                {
-                    <p> desea eliminar este autor?</p>
-                }
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss ="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" data-bs-toggle ="modal" data-bs-target="#eliminacionModal">Confirmar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-
 @code {
 
     IQueryable<Autor> itemsQueryable;
-    Autor autor = new Autor();
+    Autor Autor = new Autor();
 
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
@@ -133,7 +106,7 @@
 
     public async Task Eliminar()
     {
-        var eliminar = autorService.Eliminar(autor.AutorId);
+        var eliminar = autorService.Eliminar(Autor.AutorId);
 
         if (await eliminar)
         {
@@ -142,7 +115,7 @@
         }
         else
         {
-             toastService.ShowSuccess("Error al eliminar.");
+             toastService.ShowError("Error al eliminar.");
         }
     }  
 
