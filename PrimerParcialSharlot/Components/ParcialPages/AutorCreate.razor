@@ -59,13 +59,13 @@
 
         if (await guardar)
         {
-            toastService.ShowSuccess("Exito al guardar");
+            toastService.ShowSuccess("¡Exito al guardar!");
             navigationManager.NavigateTo("/Autor/Index");
 
         }
         else
         {
-             toastService.ShowError("fallo al guardar");
+             toastService.ShowError("Error al guardar.");
         }
     }  
 
