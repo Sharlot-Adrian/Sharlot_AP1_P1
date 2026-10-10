@@ -1,69 +1,122 @@
-﻿@using PrimerParcialSharlot.Model;
-@using PrimerParcialSharlot.Service;
+﻿@page "/Autor/Modificar/{AutorId:int}"
 @inject ToastService toastService
 @inject NavigationManager navigationManager
 @inject AutorService autorService
-@using Microsoft.AspNetCore.Components.QuickGrid
-@using PrimerParcialSharlot.Context;
 @using PrimerParcialSharlot.Extentors;
 
-@page "/Autor/Modificar"
+<h3>Modificar Autor</h3>
 
-<h3>AutorCreate</h3>
+<EditForm Model="Autor" OnValidSubmit="Modificar">
+    <DataAnnotationsValidator/>
 
-<EditForm Model="autor" OnInvalidSubmit="Guardar">
     <div class="container">
-        <div class="card-shadow-lg">
-            <div>
+        <div class="card shadow-lg">
+        <div class="card-header text-center">
+            <h5 class="card-title">Modificar Autor</h5>
+        </div>
+     
+        <div class="card-body">
 
                 <div class="ms-3">
+                    <label class="form-label"><strong>Id del Autor: </strong></label>
+                    <InputNumber class="form-control" readonly @bind-Value="Autor.AutorId"></InputNumber>
+                </div>
+                
+                <div class="ms-3">
                     <label class="form-label"><strong>Nombres: </strong></label>
-                    <InputText class="form-control" @bind-Value="autor.Nombres"></InputText>
-                    <ValidationMessage For="@(() => autor.Nombres)"></ValidationMessage>
+                    <InputText class="form-control" @bind-Value="Autor.Nombres"></InputText>
+                    <ValidationMessage For="@(() => Autor.Nombres)"></ValidationMessage>
                 </div>
 
                 <div class="ms-3">
                     <label class="form-label"><strong>Nacionalidad: </strong></label>
-                    <InputText class="form-control" @bind-Value="autor.Nacionalidad"></InputText>
-                    <ValidationMessage For="@(() => autor.Nacionalidad)"></ValidationMessage>
+                    <InputText class="form-control" @bind-Value="Autor.Nacionalidad"></InputText>
+                    <ValidationMessage For="@(() => Autor.Nacionalidad)"></ValidationMessage>
                 </div>
 
                 <div class="ms-3">
                     <label class="form-label"><strong>Sueldo: </strong></label>
-                    <InputNumber class="form-control" @bind-Value="autor.Sueldo"></InputNumber>
-                    <ValidationMessage For="@(() => autor.Sueldo)"></ValidationMessage>
+                    <InputNumber class="form-control" @bind-Value="Autor.Sueldo"></InputNumber>
+                    <ValidationMessage For="@(() => Autor.Sueldo)"></ValidationMessage>
                 </div>
 
             </div>
 
             @*footer*@
-            <div class = "container mt-2">
-                <a href = "/Autor/Index" class = btn btn-primary bi bi-arrow-left>Volver</a>
-                <button type = "submit" class = btn btn-seconday bi bi-floppy">Guardar</button>
-                <a href="" class="btn btn-secondary bi bi-floppy" data-bs-toggle="#modal" data-bs-target ="#eliminacionModal">Eliminar</a>
+            <div class = "card-footer text-center mt-2">
+                <a href = "/Autor/Index" class = "btn btn-secondary"><span class="bi bi-arrow-left"> Volver</span></a>
+                <button type = "submit" class = "btn btn-primary bi bi-floppy"> Modificar</button>
+                <button type="button" class="btn btn-danger bi bi-trash" data-bs-toggle="modal" data-bs-target ="#eliminacionModal">Eliminar</button>
+            </div>
             </div>
         </div>
-    </div>
+
+         @*modal eliminacion*@
+        <div class="modal" id="eliminacionModal" tabindex="-1" role="dialog" aria-labelledby-hidden ="nombre" >
+             <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                   <div class="modal-header">
+                      <h5 class="modal-title">Confirmar eliminacion</h5>
+                      <button type="button" class="btn-close" aria-valuetext="cerrar"></button>
+                  </div>
+
+                  <div class="modal-body">
+                 @if(Autor != null)
+                 {
+                        <p> ¿Desea eliminar este autor?</p>
+                 }
+                  </div>
+
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-primary" @onclick = "Eliminar" data-bs-dismiss ="modal">Confirmar</button>
+                     <button type="button" class="btn btn-secondary" data-bs-toggle ="modal" data-bs-target="#eliminacionModal">Cerrar</button>
+                 </div>
+              </div>
+            </div>
+        </div>
 
 </EditForm>
 
 @code {
 
-    Autor autor = new Autor();
+    [Parameter]
+    public int AutorId { get; set; }
+    Autor Autor {get; set;} = new Autor();
 
-    public async Task Guardar()
+    protected override async Task OnInitializedAsync()
     {
-        var modificado = autorService.Guardar(autor);
+        Autor = await autorService.Buscar(AutorId);
+    }
 
-        if (await modificado)
+    public async Task Modificar()
+    {
+        var modificado = await autorService.Guardar(Autor);
+
+        if (modificado)
         {
-            toastService.ShowSuccess("Exito al modificar");
+            toastService.ShowSuccess("¡Exito al modificar!");
             navigationManager.NavigateTo("/Autor/Index");
 
         }
         else
         {
-             toastService.ShowSuccess("fallo al modificar");
+             toastService.ShowError("Error al modificar.");
+        }
+    }  
+
+    public async Task Eliminar()
+    {
+        var eliminar = await autorService.Eliminar(Autor.AutorId);
+
+        if (eliminar)
+        {
+            toastService.ShowSuccess("¡Exito al eliminar!");
+            navigationManager.NavigateTo("/Autor/Index");
+
+        }
+        else
+        {
+             toastService.ShowError("Error al eliminar.");
         }
     }  
 
