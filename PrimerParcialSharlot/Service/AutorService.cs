@@ -12,7 +12,12 @@ public class AutorService (IDbContextFactory<Contexto> contextFactory
 {
     public async Task<bool> Guardar(Autor autor)
     {
-        if (await Existe(autor.AutorId))
+        if (await ExisteAutor( autor.Nombres,autor.AutorId))
+        {
+            return false;
+        }
+
+        if(! await Existe(autor.AutorId))
         {
             return await Insertar(autor);
         }
@@ -61,5 +66,11 @@ public class AutorService (IDbContextFactory<Contexto> contextFactory
     {
         await using var contexto = await contextFactory.CreateDbContextAsync();
         return await contexto.Autores.FirstOrDefaultAsync();
+    }
+
+    private async Task<bool> ExisteAutor(string Autor, int AutorId)
+    {
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        return await contexto.Autores.AnyAsync(a => a.Nombres.ToLower() == Autor.ToLower() && a.AutorId != AutorId);
     }
 }
