@@ -62,10 +62,10 @@ public class AutorService (IDbContextFactory<Contexto> contextFactory
         return await contexto.SaveChangesAsync() > 0;   
     }
 
-    public async Task<Autor?> Buscar(int estudianteId)
+    public async Task<Autor?> Buscar(int autorId)
     {
         await using var contexto = await contextFactory.CreateDbContextAsync();
-        return await contexto.Autores.FirstOrDefaultAsync();
+        return await contexto.Autores.FirstOrDefaultAsync( a => a.AutorId == autorId);
     }
 
     private async Task<bool> ExisteAutor(string Autor, int AutorId)
