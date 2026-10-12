@@ -4,6 +4,7 @@
 @inject AutorService autorService
 @using PrimerParcialSharlot.Extentors;
 
+<PageTitle>Modificar Autor</PageTitle>
 <h3>Modificar Autor</h3>
 
 <EditForm Model="Autor" OnValidSubmit="Modificar">
@@ -81,7 +82,7 @@
 
     [Parameter]
     public int AutorId { get; set; }
-    Autor Autor {get; set;} = new Autor();
+    private Autor Autor {get; set;} = new Autor();
 
     protected override async Task OnInitializedAsync()
     {

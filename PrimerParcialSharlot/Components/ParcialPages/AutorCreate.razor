@@ -6,6 +6,7 @@
 @using PrimerParcialSharlot.Context;
 @using PrimerParcialSharlot.Extentors;
 
+<PageTitle>Crear Autor</PageTitle>
 <h3>Crear Autor</h3>
 <EditForm Model="Autor" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
@@ -51,7 +52,7 @@
 
 @code {
 
-    Autor Autor { get; set; } = new Autor();
+    private Autor Autor { get; set; } = new Autor();
 
     public async Task Guardar()
     {
