@@ -12,7 +12,12 @@ public class AutorService (IDbContextFactory<Contexto> contextFactory
 {
     public async Task<bool> Guardar(Autor autor)
     {
-        if (await Existe(autor.AutorId))
+        if (await ExisteAutor( autor.Nombres,autor.AutorId))
+        {
+            return false;
+        }
+
+        if(! await Existe(autor.AutorId))
         {
             return await Insertar(autor);
         }
@@ -44,7 +49,10 @@ public class AutorService (IDbContextFactory<Contexto> contextFactory
     public async Task<List<Autor>> GetList(Expression<Func<Autor, bool>> criterio)
     {
         await using var contexto = await contextFactory.CreateDbContextAsync();
-        return await contexto.Autores.Where(criterio).AsNoTracking().ToListAsync();
+        return await contexto.Autores
+            .Where(criterio)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     private async Task<bool> Modificar(Autor autor)
@@ -54,9 +62,15 @@ public class AutorService (IDbContextFactory<Contexto> contextFactory
         return await contexto.SaveChangesAsync() > 0;   
     }
 
-    public async Task<Autor?> Buscar(int estudianteId)
+    public async Task<Autor?> Buscar(int autorId)
     {
         await using var contexto = await contextFactory.CreateDbContextAsync();
-        return await contexto.Autores.FirstOrDefaultAsync();
+        return await contexto.Autores.FirstOrDefaultAsync( a => a.AutorId == autorId);
+    }
+
+    private async Task<bool> ExisteAutor(string Autor, int AutorId)
+    {
+        await using var contexto = await contextFactory.CreateDbContextAsync();
+        return await contexto.Autores.AnyAsync(a => a.Nombres.ToLower() == Autor.ToLower() && a.AutorId != AutorId);
     }
 }

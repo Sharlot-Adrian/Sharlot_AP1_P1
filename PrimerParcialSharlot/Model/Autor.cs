@@ -13,4 +13,17 @@ public class Autor
     [Required(ErrorMessage = "Este campo es obligatorio.")]
     public double Sueldo { get; set; }
 
+    public Autor()
+    {
+
+    }
+    public Autor(int id, string nombre, string nacionalidad, double sueldo)
+    {
+        AutorId = id;
+        Nombres = nombre;
+        Nacionalidad = nacionalidad;
+        Sueldo = sueldo;
+
+    }
+
 }
